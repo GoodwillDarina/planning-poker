@@ -1,10 +1,16 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
+/// <reference types='vite-plugin-svgr/client' />
+
+import ReactDOM from 'react-dom/client';
+import { App } from './App.tsx';
+
+import { ModalState } from './context/ModalContext';
+import { BrowserRouter } from 'react-router-dom';
+import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <ModalState>
+      <App />
+    </ModalState>
+  </BrowserRouter>
 )

@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useMemo } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { Footer } from './components/Footer';
+import { Header } from './components/Header.tsx';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { Home, CreateRoom, Room } from './pages';
+
+export function App() {
+  const location = useLocation();
+  const isHomePage = useMemo(() => location.pathname === '/', [location]);
+  const pageName = useMemo(() => {
+    switch(location.pathname) {
+      case '/create': 
+        return 'Create room';
+      default: 
+        return 'Planning Poker';
+    }
+  }, [location]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className='flex flex-col justify-between h-screen'>
+      { !isHomePage && <Header title={pageName} />}
+      <main className='max-w-4xl w-full h-full py-3 px-2 mx-auto text-center'>
+        <Routes>
+          <Route path='/' element={ <Home /> } />
+          <Route path='/create' element={ <CreateRoom /> } />
+          <Route path='/room/:roomId'  element={ <Room /> } />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
 }
-
-export default App
